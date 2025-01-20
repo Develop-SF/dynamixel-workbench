@@ -60,6 +60,7 @@ class DynamixelWorkbench : public DynamixelDriver
   bool setPWMControlMode(uint8_t id, const char **log = NULL);
 
   bool setOperatingMode(uint8_t id, uint8_t index, const char **log = NULL);
+  int8_t getOperatingMode(uint8_t id, const char **log = NULL);
 
   bool jointMode(uint8_t id, int32_t velocity = 0, int32_t acceleration = 0, const char **log = NULL);
   bool wheelMode(uint8_t id, int32_t acceleration = 0, const char **log = NULL);
@@ -74,6 +75,7 @@ class DynamixelWorkbench : public DynamixelDriver
   // bool goalVelocity(uint8_t id, int32_t value, const char **log = NULL);
   bool goalVelocity(uint8_t id, float velocity, const char **log = NULL);
 
+  bool goalCurrent(uint8_t id, int value, const char **log = NULL);
   bool getPresentPositionData(uint8_t id, int32_t* data, const char **log = NULL);
   bool getRadian(uint8_t id, float* radian, const char **log = NULL);
 

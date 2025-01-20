@@ -695,6 +695,7 @@ bool DynamixelWorkbench::setOperatingMode(uint8_t id, uint8_t index, const char 
     {
       if (!strncmp(model_name, "XM", strlen("XM"))             ||
           !strncmp(model_name, "XH", strlen("XH"))             ||
+          !strncmp(model_name, "XL330", strlen("XL330"))       ||
           !strncmp(model_name, "MX-64-2", strlen("MX-64-2"))   ||
           !strncmp(model_name, "MX-106-2", strlen("MX-106-2")) ||
           !strncmp(model_name, "RH", strlen("RH")))
@@ -722,7 +723,7 @@ bool DynamixelWorkbench::setOperatingMode(uint8_t id, uint8_t index, const char 
     {
       if (!strncmp(model_name, "MX-64-2", strlen("MX-64-2"))   ||
           !strncmp(model_name, "MX-106-2", strlen("MX-106-2")) ||
-	  !strncmp(model_name, "XL330", strlen("XL330"))       ||
+	        !strncmp(model_name, "XL330", strlen("XL330"))       ||
           !strncmp(model_name, "XM", strlen("XM"))             ||
           !strncmp(model_name, "XH", strlen("XH"))             ||
           !strncmp(model_name, "RH", strlen("RH")))
@@ -1069,6 +1070,37 @@ bool DynamixelWorkbench::goalVelocity(uint8_t id, float velocity, const char **l
 
   if (log != NULL) *log = "[DynamixelWorkbench] Succeeded to set goal velocity!";
   return result;
+}
+
+bool DynamixelWorkbench::goalCurrent(uint8_t id, int value, const char **log)
+{
+  bool result = false;
+  
+  result = itemWrite(id, "Goal_Current", value, log);
+
+  if (result == false)
+  {
+    if (log != NULL) *log = "[DynamixelWorkbench] Failed to set goal current!";
+    return false;
+  }
+
+  if (log != NULL) *log = "[DynamixelWorkbench] Succeeded to set goal current!";
+  return result;
+}
+
+int8_t DynamixelWorkbench::getOperatingMode(uint8_t id, const char **log)
+{
+  bool result = 0;
+  int32_t get_data = 0;
+
+  result = readRegister(id, "Operating_Mode", &get_data, log);
+  if (result == false)
+  {
+    if (log != NULL) *log = "[DynamixelWorkbench] Failed to get operating mode data!";
+    return -1;
+  }
+  if (log != NULL) *log = "[DynamixelWorkbench] Succeeded to get operating mode data!";
+  return static_cast<int8_t>(get_data);
 }
 
 bool DynamixelWorkbench::getPresentPositionData(uint8_t id, int32_t* data, const char **log)
